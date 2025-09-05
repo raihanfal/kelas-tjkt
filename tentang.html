@@ -5,55 +5,155 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tentang Kelas 11 TJKT 1</title>
 <style>
-  body{
+  /* Style dasar */
+  body {
     font-family: Arial, sans-serif;
-    margin:0;
-    background:#0f172a;
-    color:#e5e7eb;
+    margin: 0;
+    background: #0f172a;
+    color: #e5e7eb;
+    animation: fadeIn 0.6s ease-in;
   }
-  header{
-    text-align:center;
-    padding:24px;
-    background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(34,211,238,.10), rgba(244,114,182,.10));
-    border-bottom:1px solid rgba(148,163,184,.2);
+  @keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
   }
-  header h1{margin:0;font-size:28px;font-weight:800;}
-  header p{margin:6px 0 0;color:#94a3b8;}
 
-  main{max-width:700px;margin:0 auto;padding:20px;}
-  section{margin-bottom:28px;}
-  h2{font-size:20px;margin-bottom:12px;color:#a5b4fc;}
-  ul{list-style:none;padding:0;margin:0;}
-  li{
-    background:#111827;
-    border:1px solid rgba(148,163,184,.2);
-    padding:12px 16px;
-    border-radius:8px;
-    margin-bottom:10px;
+  /* Heading */
+  h2 {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 4px;
+    font-size: 20px;
+    margin-bottom: 12px;
+    color: #a5b4fc;
   }
-  li span{display:block;font-weight:600;color:#f9fafb;}
-  li small{color:#94a3b8;}
-  footer{
+  h2::after {
+    content: "";
+    position: absolute;
+    width: 60%;
+    height: 2px;
+    left: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, #a5b4fc, transparent);
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(99,102,241,.15), rgba(34,211,238,.10), rgba(244,114,182,.10));
+    border-bottom: 1px solid rgba(148,163,184,.2);
+  }
+  header h1 {margin:0;font-size:28px;font-weight:800;}
+  header p {margin:6px 0 0;color:#94a3b8;}
+
+  /* Navigasi */
+  nav {
+    text-align: center;
+    padding: 15px;
+    background: #1e293b;
+  }
+  nav a {
+    display: inline-block;
+    margin: 2px 8px;
+    padding: 10px 16px;
+    background: #334155;
+    color: #e5e7eb;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: 0.2s;
+  }
+  nav a:hover {background:#475569;}
+
+  /* Konten */
+  main {max-width: 700px; margin: 0 auto; padding: 20px;}
+  section {margin-bottom: 28px;}
+
+  /* List umum */
+  ul {list-style:none;padding:0;margin:0;}
+  li {
+    background: #111827;
+    border: 1px solid rgba(148,163,184,.2);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    background: #1e293b;
+  }
+  li span {
+    display: block;
+    font-weight: 600;
+    color: #e5e7eb; /* default text color */
+  }
+  li small {color:#94a3b8;}
+
+  /* Grid daftar siswa */
+  .daftar-siswa {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .daftar-siswa li {margin:0;}
+  .daftar-siswa span {margin-right:6px;}
+
+  /* Warna garis khusus */
+  li.wali {border-left:4px solid #facc15;}
+  li.ketua {border-left:4px solid #a78bfa;}
+  li.wakil {border-left:4px solid #60a5fa;}
+  li.sekretaris {border-left:4px solid #34d399;}
+  li.bendahara {border-left:4px solid #f87171;}
+  li.agama {border-left:4px solid #fbbf24;}
+  li.olahraga {border-left:4px solid #22d3ee;}
+  li.pendidikan {border-left:4px solid #035479;}
+
+  /* Warna taruna/taruni */
+  .daftar-siswa li.taruna span {color:#38bdf8;}
+  .daftar-siswa li.taruni span {color:#f472b6;}
+
+  /* Footer */
+  footer {
     text-align:center;
     color:#94a3b8;
     font-size:13px;
     padding:20px 0 40px;
   }
-  nav{
-    text-align:center;
-    margin:10px 0 20px;
+
+  /* Social links */
+  .social-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 10px;
+    margin-top: 12px;
   }
-  nav a{
-    display:inline-block;
-    margin:0 8px;
-    padding:8px 14px;
-    background:#1e293b;
-    color:#e5e7eb;
-    text-decoration:none;
-    border-radius:6px;
-    font-size:14px;
+  .social-links a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #1e293b;
+    border: 1px solid rgba(148,163,184,.2);
+    border-radius: 8px;
+    color: #e5e7eb;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
+    white-space: nowrap;
   }
-  nav a:hover{background:#334155;}
+  .social-links a:hover {
+    background: #334155;
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  }
+  .social-links a span {
+    font-size: 18px;
+  }
 </style>
 </head>
 <body>
@@ -64,31 +164,76 @@
 </header>
 
 <nav>
-  <a href="album.html">🏠 Album Foto</a>
-  <a href="tentang.html">ℹ️ Tentang Kelas</a>
-<br>
-  <a href="layout.html">🏠 Beranda Kelas</a>
-  <a href="jadwal.html"> Jadwal Kelas</a>
+  <a href="layout.html">🏠 Beranda</a>
+  <a href="album.html">📸 Album</a>
+  <a href="jadwal.html">📅 Jadwal</a>
 </nav>
 
 <main>
   <section>
+    <h2>Tentang Kelas</h2>
+    <p>Kelas XI TJKT 1 adalah bagian dari jurusan Teknik Jaringan Komputer dan Telekomunikasi. 
+       Kami terdiri dari 5 taruna & 29 taruni yang solid, aktif, dan berprestasi.</p>
+  </section>
+  
+  <section>
     <h2>Struktur Organisasi Kelas</h2>
     <ul>
-      <li><span>Wali Kelas</span> <small>Ibu Azizah</small></li>
-      <li><span>Ketua Kelas</span> <small>Hesti</small></li>
-      <li><span>Wakil Ketua Kelas</span> <small>Salsabilla</small></li>
-      <li><span>Sekretaris</span> <small>Anggi & Della</small></li>
-      <li><span>Bendahara</span> <small>Yurike & Sindi</small></li>
-      <li><span>Seksi Agama</span> <small>Rafi</small></li>
-      <li><span>Seksi Olahraga</span> <small>Emah & Surya</small></li>
-      <li><span>Seksi Pendidikan</span> <small>Raihan & Dika</small></li>
+      <li class="wali"><span>👩‍🏫 Wali Kelas</span> <small>Ibu Azizah</small></li>
+      <li class="ketua"><span>⭐ Ketua Kelas</span> <small>Hesti</small></li>
+      <li class="wakil"><span>🎓 Wakil Ketua Kelas</span> <small>Salsabilla</small></li>
+      <li class="sekretaris"><span>📝 Sekretaris</span> <small>Anggi & Della</small></li>
+      <li class="bendahara"><span>💰 Bendahara</span> <small>Yurike & Sindi</small></li>
+      <li class="agama"><span>✨ Seksi Agama</span> <small>Rafi</small></li>
+      <li class="olahraga"><span>⚽ Seksi Olahraga</span> <small>Emah & Surya</small></li>
+      <li class="pendidikan"><span>📖 Seksi Pendidikan</span> <small>Raihan & Dika</small></li>
     </ul>
+  </section>
+  
+  <section>
+    <h2>Daftar Taruna (5)</h2>
+    <ul class="daftar-siswa">
+      <li class="taruna"><span>👨</span> Ahmad Rafi Hakim</li>
+      <li class="taruna"><span>👨</span> Dika Ardianto</li>
+      <li class="taruna"><span>👨</span> Muhammad Arif Subagja</li>
+      <li class="taruna"><span>👨</span> Raihan Fadly Al Ichsani</li>
+      <li class="taruna"><span>👨</span> Surya Prika Yoga</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Daftar Taruni (29)</h2>
+    <ul class="daftar-siswa">
+      <li class="taruni"><span>👩</span> Hesti</li>
+      <li class="taruni"><span>👩</span> Salsabilla</li>
+      <li class="taruni"><span>👩</span> Yurike</li>
+      <li class="taruni"><span>👩</span> Sindi</li>
+      <li class="taruni"><span>👩</span> Anggi</li>
+    </ul>
+  </section>
+  
+  <section>
+    <h2>Media Sosial & Kontak</h2>
+    <div class="social-links">
+      <a href="https://www.instagram.com/eleven_tjktone1?igsh=MWhlcnZxMmNtMml1MA==" target="_blank">
+        <span>📸</span>@eleven_tjktone1
+      </a>
+      <a href="https://www.instagram.com/tjktnesaka?igsh=MXg0a2dqaGU1cjlhNA==" target="_blank">
+        <span>💻</span>@tjktnesaka
+      </a>
+      <a href="https://www.instagram.com/smkn1kandanghaur?igsh=eThyM2pzOGI3dzF6" target="_blank">
+        <span>🏫</span>@smkn1kandanghaur
+      </a>
+      <a href="https://www.instagram.com/azizah_mauliddiyah?igsh=MWNqN2txeGtxeDdhcQ==" target="_blank">
+        <span>👩‍🏫</span>@azizah_mauliddiyah
+      </a>
+    </div>
   </section>
 </main>
 
 <footer>
-  © XI TJKT 1 Angkatan 21 • Struktur Organisasi Kelas ✨
+  © XI TJKT 1 Angkatan 21 ✨ <br>
+  <small>"Bersatu kita kuat, berprestasi tanpa batas"</small>
 </footer>
 
 </body>
