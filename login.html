@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>LOGIN !!!</title>
+  <style>
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    #loginPage {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: #0a0a23;
+      color: #fff;
+    }
+
+    .login-card {
+      background: #111a3d;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      width: 320px;
+    }
+
+    .login-card h2 {
+      margin-bottom: 20px;
+    }
+
+    .login-card input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+    }
+
+    .login-card button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .login-card button:hover {
+      opacity: 0.9;
+    }
+
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+    <div id="loginPage">
+    <div class="login-card">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username">
+      <input type="password" id="password" placeholder="Password">
+      <button onclick="login()">Masuk</button>
+      <p id="error"></p>
+    </div>
+  </div>
+  
+    <script>
+    function login() {
+      let user = document.getElementById("username").value;
+      let pass = document.getElementById("password").value;
+
+      if (user === "admin" && pass === "12345") {
+        // Redirect ke file lain
+        window.location.href = "layout.html"; 
+      } else {
+        document.getElementById("error").innerText = "Username atau password salah!";
+      }
+    }
+  </script>
+  
+</body>
+</html>
