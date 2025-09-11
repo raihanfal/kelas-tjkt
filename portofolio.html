@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Portfolio — Raihan Fadly Al-Ichsani</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#6ee7b7; --muted:#94a3b8; --glass: rgba(255,255,255,0.03);
+      --radius:16px; --fw-regular: 400; --fw-bold:700;
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(180deg,#071129 0%, #071722 100%);color:#e6eef8;line-height:1.5;}
+    header{position:fixed;top:0;left:0;right:0;z-index:1000;background:rgba(15,23,36,0.85);backdrop-filter: blur(8px);padding:18px 24px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 10px rgba(0,0,0,0.4)}
+    .logo{display:flex;gap:12px;align-items:center}
+    .logo-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--accent)}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600}
+    .btn{background:var(--accent);padding:8px 14px;border-radius:12px;color:#032017;text-decoration:none;font-weight:700}/* Hero */
+.hero{min-height:100vh;display:grid;grid-template-columns:1fr;align-items:center;padding:140px 20px 60px;max-width:1100px;margin:0 auto}
+.hero-inner{display:grid;grid-template-columns:1fr 360px;gap:36px;align-items:center}
+.headline{max-width:680px}
+.kicker{display:inline-block;background:var(--glass);padding:6px 10px;border-radius:999px;color:var(--accent);font-weight:700;margin-bottom:18px}
+h1{margin:0;font-size:42px;line-height:1.02}
+h2{margin:6px 0 18px;color:var(--muted);font-weight:600}
+p.lead{color:var(--muted);margin:18px 0 26px}
+.cta{display:flex;gap:12px}
+
+/* profile card */
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:22px;border-radius:20px;box-shadow:0 8px 30px rgba(2,6,23,0.6);backdrop-filter: blur(6px)}
+.avatar{width:200px;height:200px;border-radius:50%;overflow:hidden;display:block;margin:0 auto 14px;border:6px solid rgba(255,255,255,0.04)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.name{text-align:center;font-weight:700;font-size:20px}
+.role{text-align:center;color:var(--muted);margin-top:6px}
+
+/* Sections */
+section{max-width:1100px;margin:36px auto;padding:0 20px}
+.grid{display:grid;gap:18px}
+.services{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));display:grid}
+.service{background:var(--card);padding:18px;border-radius:14px}
+.skills{display:flex;flex-direction:column;gap:12px}
+.skill-row{display:flex;justify-content:space-between;align-items:center}
+.meter{height:10px;background:#0b1520;border-radius:999px;overflow:hidden}
+.meter > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#60a5fa)}
+
+/* portfolio gallery */
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.gallery img{width:100%;height:180px;object-fit:cover;border-radius:10px}
+
+footer{padding:36px 20px;text-align:center;color:var(--muted)}
+
+/* Instagram button */
+.social-links{display:flex;justify-content:center;gap:16px;margin-top:14px}
+.social-links a{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;text-decoration:none;font-weight:600}
+.ig{background:#e1306c;color:#fff}
+
+/* responsive */
+@media (max-width:880px){.hero-inner{grid-template-columns:1fr;gap:28px;padding-bottom:20px}.avatar{width:160px;height:160px}}
+@media (max-width:560px){header{padding:12px 16px}.kicker{font-size:13px}h1{font-size:32px}}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="profile.png" alt="Foto Profil" class="logo-avatar">
+      <div>
+        <div style="font-weight:700">Raihan Fadly</div>
+        <small style="color:var(--muted)">XI TJKT 1 • Student</small>
+      </div>
+    </div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#portfolio">Portfolio</a>
+      <a class="btn" href="#contact">Contact</a>
+    </nav>
+  </header>  <main>
+    <section class="hero" id="home">
+      <div class="hero-inner">
+        <div class="headline">
+          <span class="kicker">Hello, It's Me</span>
+          <h1>Raihan Fadly Al-Ichsani — <span style="color:var(--accent)">XI TJKT 1 Student</span></h1>
+          <h2>And I am a <strong>Frontend Developer</strong></h2>
+          <p class="lead">Saya tertarik dengan teknologi, membuat website responsif, UI/UX design, serta mengembangkan proyek yang berguna. Saya menguasai HTML, CSS, dan JavaScript serta senang belajar framework baru.</p>
+          <div class="cta">
+            <a class="btn" href="#contact">Contact me</a>
+            <a style="background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--muted)" href="#portfolio">My Work</a>
+          </div>
+        </div><div class="card">
+      <div class="avatar">
+        <img src="logo.jpg" alt="Foto Profil">
+      </div>
+      <div class="name">Raihan Fadly Al-Ichsani</div>
+      <div class="role">Pelajar XI TJKT 1</div>
+      <p style="text-align:center;color:var(--muted);margin-top:12px">Saya berpengalaman di frontend, jaringan, serta desain grafis. Senang bekerja dalam tim dan menyelesaikan proyek yang menantang.</p>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <h3>About Me</h3>
+  <div class="grid">
+    <p style="color:var(--muted)">Saya adalah pelajar SMKN 1 Kandanghaur, berumur 16 tahun. Saya lahir di Jakarta pada 27 Desember 2008. Saat ini saya duduk di kelas XI TJKT 1. Saya memiliki minat di bidang teknologi, pemrograman, dan desain.</p>
+  </div>
+</section>
+
+<section id="services">
+  <h3>My Services</h3>
+  <div class="services">
+    <div class="service"><strong>UI/UX Design</strong><p style="color:var(--muted)">Mendesain antarmuka yang intuitif dan menarik.</p></div>
+    <div class="service"><strong>Frontend Dev</strong><p style="color:var(--muted)">Membangun website responsif menggunakan HTML/CSS/JS.</p></div>
+    <div class="service"><strong>Graphic Design</strong><p style="color:var(--muted)">Membuat logo, poster dan aset visual.</p></div>
+  </div>
+</section>
+
+<section id="skills">
+  <h3>Skills</h3>
+  <div class="skills">
+    <div class="skill-row"><div>HTML</div><div>90%</div></div>
+    <div class="meter"><i style="width:90%"></i></div>
+    <div class="skill-row"><div>CSS</div><div>85%</div></div>
+    <div class="meter"><i style="width:85%"></i></div>
+    <div class="skill-row"><div>JavaScript</div><div>45%</div></div>
+    <div class="meter"><i style="width:45%"></i></div>
+  </div>
+</section>
+
+<section id="portfolio">
+  <h3>Latest Project</h3>
+  <div class="gallery">
+    <img src="project1.jpg" alt="Project 1">
+    <img src="project2.jpg" alt="Project 2">
+    <img src="project3.jpg" alt="Project 3">
+    <img src="project4.jpg" alt="Project 4">
+  </div>
+</section>
+
+<section id="contact">
+  <h3>Contact Me</h3>
+  <p style="color:var(--muted)">Hubungi saya melalui email, telepon, atau sosial media di bawah ini.</p>
+  <div class="grid">
+    <p><strong>📞 Telepon:</strong> 083161437144</p>
+    <p><strong>📧 Email:</strong> raihanfadly653@gmail.com</p>
+  </div>
+  <div class="social-links">
+    <a class="ig" href="https://www.instagram.com/beyourself_yk?igsh=MXZpODVoNWc4b3NreQ==" target="_blank">📷 Instagram</a>
+  </div>
+  <form style="max-width:640px;margin-top:20px;display:grid;gap:8px">
+    <input placeholder="Nama" style="padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit">
+    <input placeholder="Email / WA" style="padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit">
+    <textarea placeholder="Pesan" style="padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit"></textarea>
+    <button type="button" style="padding:10px;border-radius:10px;border:none;background:var(--accent);font-weight:700">Kirim</button>
+  </form>
+</section>
+
+  </main>  <footer>
+    <div>Developed with ❤ — Raihan Fadly • raihanfadly653@gmail.com</div>
+  </footer>  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', e=>{
+        e.preventDefault();
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+      })
+    })
+  </script></body>
+</html>
