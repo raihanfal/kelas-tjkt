@@ -1,0 +1,230 @@
+/* ===== Global ===== */  
+    * { box-sizing: border-box; }  
+    html,body { height: 100%; }  
+    body {  
+      font-family: 'Poppins', sans-serif;  
+      margin: 0;  
+      padding: 0;  
+      background: linear-gradient(270deg, #0f172a, #2563eb, #06b6d4, #7c3aed, #a90ddc);  
+      background-size: 600% 600%;  
+      animation: gradientBG 20s ease infinite;  
+      color: #f8fafc;  
+      -webkit-font-smoothing: antialiased;  
+      -moz-osx-font-smoothing: grayscale;  
+    }  
+    @keyframes gradientBG {  
+      0% { background-position: 0% 50%; }  
+      50% { background-position: 100% 50%; }  
+      100% { background-position: 0% 50%; }  
+    }  header {  
+  background: url('header.jpg') no-repeat center center;  
+  background-size: cover;  
+  color: white;  
+  text-align: center;  
+  padding: 60px 20px;  
+  margin-bottom: 20px;  
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);  
+  position: relative;  
+}  
+header::before {  
+  content: "";  
+  position: absolute;  
+  inset: 0;  
+  background: rgba(0,0,0,0.45);  
+  z-index: 0;  
+}  
+header h1, header p {  
+  position: relative;  
+  z-index: 1;  
+}  
+
+/* Container center */  
+.container {  
+  width: 100%;  
+  max-width: 900px;  
+  margin: 0 auto;  
+  padding: 0 20px 40px;  
+}  
+
+/* filter buttons */  
+.filter-btns {  
+  display: flex;  
+  gap: 10px;  
+  justify-content: center;  
+  margin-bottom: 14px;  
+  flex-wrap: wrap;  
+}  
+.filter-btn {  
+  padding: 8px 14px;  
+  border-radius: 10px;  
+  border: none;  
+  background: rgba(255,255,255,0.12);  
+  color: #fff;  
+  cursor: pointer;  
+  font-weight: 600;  
+  transition: background 0.18s, transform 0.12s;  
+}  
+.filter-btn:hover { transform: translateY(-2px); }  
+.filter-btn.active {  
+  background: linear-gradient(90deg,#3b82f6,#9333ea);  
+  box-shadow: 0 6px 18px rgba(59,130,246,0.18);  
+}  
+
+/* wrapper khusus untuk search supaya mudah diatur posisinya */  
+.search-wrap {  
+  width: 100%;  
+  display: block;  
+  margin: 0 auto 22px;  
+  position: relative;  
+  z-index: 5;  
+}  
+
+#searchInput {  
+  display: block;  
+  width: 100%;  
+  padding: 14px 18px;  
+  border-radius: 12px;  
+  border: none;  
+  outline: none;  
+  font-size: 16px;  
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);  
+  color: #111827;  
+  background: #ffffff;  
+  max-width: 100%;  
+}  
+
+.highlight {  
+  background: #06e706;  
+  color: black;  
+  padding: 2px 4px;  
+  border-radius: 3px;  
+}  
+
+/* grid daftar siswa */  
+.daftar-siswa {  
+  display: grid;  
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));  
+  gap: 18px;  
+  justify-content: center;  
+  padding: 0;  
+  list-style: none;  
+  margin: 0;  
+  position: relative;  
+  z-index: 1;  
+}  
+
+.daftar-siswa li {  
+  background: linear-gradient(135deg, #062d6b, #6815b4, #c2156b);  
+  color: white;  
+  font-weight: 650;  
+  text-align: center;  
+  padding: 28px 12px;  
+  border-radius: 12px;  
+  cursor: pointer;  
+  transition: transform 0.25s ease, box-shadow 0.25s ease;  
+  opacity: 0;  
+  animation: fadeInUp 0.5s forwards;  
+  min-height: 66px;  
+  display: flex;  
+  align-items: center;  
+  justify-content: center;  
+  box-shadow: 0 6px 18px rgba(2,6,23,0.6);  
+    
+}  
+
+.daftar-siswa li:hover {  
+  transform: translateY(-5px) scale(1.08);  
+  box-shadow: 0 0 20px rgba(59,130,246,0.8), 0 0 40px rgba(147,51,234,0.6);  
+  z-index: 10;  
+}  
+
+@keyframes fadeInUp {  
+  from { opacity: 0; transform: translateY(10px); }  
+  to { opacity: 1; transform: translateY(0); }  
+}  
+
+.biodata {  
+  display: none;  
+  background: #1e293b;  
+  color: white;  
+  padding: 25px;  
+  border-radius: 14px;  
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);  
+  margin-top: 25px;  
+  animation: fadeIn 0.45s ease;  
+}  
+
+.qrcode {  
+  text-align: center;  
+}  
+.qrcode img {  
+  margin-top: 15px;  
+  max-width: 220px;  
+  border-radius: 10px;  
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);  
+  animation: fadeIn 0.45s ease;  
+}  
+
+.back-btn {  
+  margin-top: 20px;  
+  display: inline-block;  
+  padding: 12px 20px;  
+  background: linear-gradient(135deg, #9333ea, #3b82f6);  
+  color: white;  
+  font-weight: bold;  
+  border-radius: 8px;  
+  text-decoration: none;  
+  cursor: pointer;  
+  transition: transform 0.2s, box-shadow 0.2s;  
+}  
+.back-btn:hover {  
+  transform: translateY(-3px);  
+  box-shadow: 0 6px 15px rgba(0,0,0,0.4);  
+}  
+
+footer {  
+  margin-top: 30px;  
+  color: #cbd5e1;  
+  font-size: 13px;  
+  text-align: center;  
+  padding: 12px 0;  
+}  
+
+/* ===== Responsive tweaks ===== */  
+@media (max-width: 640px) {  
+  header { padding: 22px 14px; margin-bottom: 14px; }  
+  .container { padding: 0 14px 30px; max-width: 680px; }  
+  #searchInput { padding: 12px 14px; font-size: 15px; }  
+  .daftar-siswa { gap: 14px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }  
+  .daftar-siswa li { padding: 20px 10px; min-height: 64px; }  
+  .search-wrap { margin-bottom: 16px; }  
+}  
+
+@media (min-width: 992px) {  
+  .container { padding-top: 10px; padding-bottom: 50px; }  
+  .search-wrap { margin-bottom: 28px; }  
+  .daftar-siswa { gap: 20px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }  
+  .daftar-siswa li { padding: 32px 14px; min-height: 70px; }  
+}  
+
+/* Loading */  
+#loading {  
+  position: fixed;  
+  inset: 0;  
+  background: rgba(0,0,0,0.7);  
+  display: flex;  
+  justify-content: center;  
+  align-items: center;  
+  z-index: 9999;  
+  transition: opacity 1s ease;  
+}  
+.spinner {  
+  width: 60px;  
+  height: 60px;  
+  border: 6px solid #ddd;  
+  border-top: 6px solid #3498db;  
+  border-radius: 50%;  
+  animation: spin 1s linear infinite;  
+}  
+@keyframes spin { to { transform: rotate(360deg); } }  
+#loading.fade-out { opacity: 0; pointer-events: none; }

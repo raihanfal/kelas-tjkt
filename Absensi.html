@@ -1,0 +1,207 @@
+<!DOCTYPE html>  <html lang="id">  
+<head>  
+  <meta charset="UTF-8" />  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+  <title>Absensi QRCode XI TJKT 1</title>  
+ <link rel="stylesheet" href="absensi.css">
+</head>  
+<body>  
+  <header>  
+    <h1>Absensi QRCode XI TJKT 1</h1>  
+    <p>Klik nama siswa untuk melihat biodata + QR Code</p>  
+  </header>  
+  <p style="text-align: center;">👨 9 Cowok | 👩 25 Cewek | 👥 34 Total</p>  
+  <div class="container">  
+    <!-- FILTER -->  
+    <div class="filter-btns" role="toolbar" aria-label="Filter siswa">  
+      <button class="filter-btn active" id="filter-all" onclick="setGenderFilter('all')">Semua</button>  
+      <button class="filter-btn" id="filter-L" onclick="setGenderFilter('L')">Cowok</button>  
+      <button class="filter-btn" id="filter-P" onclick="setGenderFilter('P')">Cewek</button>  
+    </div>  <!-- search wrapper -->  
+<div class="search-wrap">  
+  <input  
+    type="text"  
+    id="searchInput"  
+    placeholder="🧑‍🎓 Cari nama siswa..."  
+    onkeyup="cariSiswa()"  
+  >  
+</div>  
+
+<ul class="daftar-siswa" id="daftarSiswa"></ul>  
+
+<div class="biodata" id="biodataBox">  
+  <h2 id="nama"></h2>  
+  <p><strong>Kelas:</strong> XI TJKT 1</p>  
+  <p><strong>Tanggal Lahir:</strong> <span id="lahir">-</span></p>  
+  <p><strong>Umur:</strong> <span id="umur">-</span> Tahun</p>  
+  <p><strong>Sekolah:</strong> SMK Negeri 1 Kandanghaur</p>  
+  <div class="qrcode">  
+    <h3>QR Code Absensi</h3>  
+    <img id="qr" src="" alt="QR Code">  
+  </div>  
+  <div style="text-align:center;">  
+    <a class="back-btn" onclick="kembali()">← Kembali</a>  
+  </div>  
+</div>
+
+  </div>    <footer>  
+    <marquee behavior="scroll" direction="left" class="marq">  
+      &copy; 2025 By Raihan Fadly Al Ichsani | XI TJKT 1 | Dibuat dengan ❤️  
+    </marquee>  
+  </footer>    <!-- loading -->    <div id="loading">  
+    <div class="spinner"></div>  
+  </div>  <script>  
+  // ===== data siswa (ditambah properti gender: 'L' = laki-laki, 'P' = perempuan) =====  
+  const siswa = [  
+    { nama: "Achmad Rafi Hakim", qr: "qr/achmadrafi.png", umur: 16, gender: "L" },  
+    { nama: "Aisyah Amelia", qr: "qr/aisyah.png", umur: 17, gender: "P" },  
+    { nama: "Ana Rostiana", qr: "qr/anarostiana.png", umur: 16, gender: "P" },  
+    { nama: "Anggi Jubaedah", qr: "qr/anggi.png", umur: 17, gender: "P" },  
+    { nama: "Ayu Yunita", qr: "qr/ayuyunita.png", umur: 16, gender: "P" },  
+    { nama: "Bela Safitri", qr: "qr/bela.png", umur: 17, gender: "P" },  
+    { nama: "Dela Oktavia", qr: "qr/dela.png", umur: 16, gender: "P" },  
+    { nama: "Dika Ardianto", qr: "qr/dika.png", umur: 17, gender: "L" },  
+    { nama: "Diyas Restyana Putri", qr: "qr/diyas.png", umur: 16, gender: "P" },  
+    { nama: "Emah Rahmawati", qr: "qr/emah.png", umur: 17, gender: "P" },  
+    { nama: "Hesti Damayanti", qr: "qr/hesti.png", umur: 16, gender: "P" },  
+    { nama: "Kirana", qr: "qr/kirana.png", umur: 17, gender: "P" },  
+    { nama: "Lailatul Fazriyah", qr: "qr/lailatul.png", umur: 16, gender: "P" },  
+    { nama: "Miftah Fauziah", qr: "qr/miftah.png", umur: 17, gender: "P" },  
+    { nama: "Muhammad Arif Subagja", qr: "qr/marif.png", umur: 16, gender: "L" },  
+    { nama: "Nabila Tuz Zahro", qr: "qr/nabila.png", umur: 17, gender: "P" },  
+    { nama: "Nelisa Agustina", qr: "qr/nelisah.png", umur: 16, gender: "P" },  
+    { nama: "Nindita Apriliya", qr: "qr/nindita.png", umur: 17, gender: "P" },  
+    { nama: "Nuning Wulandari", qr: "qr/nuning.png", umur: 16, gender: "P" },  
+    { nama: "Nurjanah", qr: "qr/nurjanah.png", umur: 17, gender: "P" },  
+    { nama: "Putri Eko Nur Hidayah", qr: "qr/putri.png", umur: 16, gender: "P" },  
+    { nama: "Raihan Fadly Al Ichsani", qr: "qr/raihan.png", umur: 17, gender: "L" },  
+    { nama: "Renita Agustina", qr: "qr/renita.png", umur: 16, gender: "P" },  
+    { nama: "Rifana Auliya Fizka", qr: "qr/rifana.png", umur: 17, gender: "P" },  
+    { nama: "Riris Riska Agustin", qr: "qr/riris.png", umur: 16, gender: "P" },  
+    { nama: "Salsabila Azzahra", qr: "qr/salsa.png", umur: 17, gender: "P" },  
+    { nama: "Sindi Triya Maulani", qr: "qr/sindi.png", umur: 16, gender: "P" },  
+    { nama: "Siti Hasnah", qr: "qr/shasna.png", umur: 17, gender: "P" },  
+    { nama: "Siti Sarofa", qr: "qr/siropah.png", umur: 16, gender: "P" },  
+    { nama: "Surya Prika Yoga", qr: "qr/surya.png", umur: 17, gender: "L" },  
+    { nama: "Syifa Aliya", qr: "qr/syifa.png", umur: 16, gender: "P" },  
+    { nama: "Tasya April Yani", qr: "qr/tasya.png", umur: 17, gender: "P" },  
+    { nama: "Triana Putri", qr: "qr/triana.png", umur: 16, gender: "P" },  
+    { nama: "Yurike Prastika", qr: "qr/yurike.png", umur: 17, gender: "P" }  
+  ];  
+  
+  // DOM refs  
+  const daftar = document.getElementById("daftarSiswa");  
+  const biodataBox = document.getElementById("biodataBox");  
+  const nama = document.getElementById("nama");  
+  const umur = document.getElementById("umur");  
+  const qr = document.getElementById("qr");  
+  
+  // current gender filter ('all' | 'L' | 'P')  
+  let currentGenderFilter = 'all';  
+  
+  // escape regex to avoid errors if user types special chars  
+  function escapeRegExp(string) {  
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');  
+  }  
+  
+  // set gender filter from buttons  
+  function setGenderFilter(gender) {  
+    currentGenderFilter = gender;  
+    // update active classes  
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));  
+    if (gender === 'all') {  
+      document.getElementById('filter-all').classList.add('active');  
+    } else if (gender === 'L') {  
+      document.getElementById('filter-L').classList.add('active');  
+    } else if (gender === 'P') {  
+      document.getElementById('filter-P').classList.add('active');  
+    }  
+    // re-render with current search + new gender  
+    renderList();  
+  }  
+  
+  // Render daftar siswa (menggunakan nilai search input & currentGenderFilter)  
+  function renderList() {  
+    const rawFilter = document.getElementById("searchInput").value || "";  
+    const filter = rawFilter.trim();  
+    const lowerFilter = filter.toLowerCase();  
+  
+    daftar.innerHTML = "";  
+    let found = false;  
+  
+    // iterate siswa and apply both search & gender filter  
+    siswa.forEach((data) => {  
+      const lowerNama = data.nama.toLowerCase();  
+  
+      // gender filter check  
+      if (currentGenderFilter !== 'all' && data.gender !== currentGenderFilter) {  
+        return; // skip this siswa  
+      }  
+  
+      // search text check  
+      if (lowerNama.includes(lowerFilter)) {  
+        found = true;  
+        const li = document.createElement("li");  
+  
+        // highlight search term safely  
+        if (filter !== "") {  
+          const safe = escapeRegExp(filter);  
+          const regex = new RegExp(`(${safe})`, "gi");  
+          li.innerHTML = data.nama.replace(regex, "<span class='highlight'>$1</span>");  
+        } else {  
+          li.innerHTML = data.nama;  
+        }  
+  
+        // keep gender as data attribute (optional)  
+        li.setAttribute('data-gender', data.gender);  
+  
+        li.onclick = () => tampilBiodata(data);  
+        daftar.appendChild(li);  
+      }  
+    });  
+  
+    // kalau ga ada hasil  
+    if (!found) {  
+      const li = document.createElement("li");  
+      li.textContent = "❌ Nama yang anda cari tidak ada";  
+      li.style.background = "#dc2626";  
+      li.style.fontWeight = "bold";  
+      li.style.cursor = "default";  
+      daftar.appendChild(li);  
+    }  
+  }  
+  
+  function tampilBiodata(data) {  
+    daftar.style.display = "none";  
+    document.getElementById("searchInput").style.display = "none";  
+    biodataBox.style.display = "block";  
+    nama.textContent = data.nama;  
+    umur.textContent = data.umur;  
+    qr.src = data.qr;  
+  }  
+  
+  function kembali() {  
+    biodataBox.style.display = "none";  
+    daftar.style.display = "grid";  
+    document.getElementById("searchInput").style.display = "block";  
+  }  
+  
+  function cariSiswa() {  
+    renderList();  
+  }  
+  
+  // hide loading on window load (keberadaan loading tidak diubah)  
+  window.addEventListener("load", () => {  
+    const loading = document.getElementById("loading");  
+    if (loading) {  
+      loading.classList.add('fade-out');  
+      // after fade-out transition, remove from DOM flow  
+      setTimeout(() => { loading.style.display = 'none'; }, 1000);  
+    }  
+  });  
+  
+  // initial render  
+  renderList();  
+  </script>
+</body>  
+</html>

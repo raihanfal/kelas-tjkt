@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Absensi QR Code</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(270deg, #6a11cb, #2575fc, #ff6a00, #00c6ff, #f857a6);
+      background-size: 1000% 1000%;
+      animation: gradientBG 25s ease infinite alternate;
+      color: #fff;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      width: 90%;
+      max-width: 1000px;
+      display: flex;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      backdrop-filter: blur(12px);
+    }
+    .info-panel {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: rgba(0,0,0,0.25);
+    }
+    .info-panel h2 { font-size: 1.8rem; margin-bottom: 1rem; }
+    .info-panel ul { list-style: none; }
+    .info-panel li { margin-bottom: 0.8rem; font-size: 1.1rem; }
+    .login-form {
+      flex: 1;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .login-form h2 {
+      margin-bottom: 1rem;
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-align: center;
+    }
+    .input-group {
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 40px 12px 15px; /* extra space kanan untuk icon mata */
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+    .input-group input::placeholder { color: rgba(255,255,255,0.7); }
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.7);
+      user-select: none;
+    }
+    .login-form a {
+      font-size: 0.9rem;
+      color: #00c6ff;
+      text-decoration: none;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+    .login-form button {
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: #fff;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .login-form button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+    #hint {
+      margin-top: 10px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+    }
+    #errorMsg {
+      margin-top: 10px;
+      color: #ff6a6a;
+      text-align: center;
+      display: none;
+    }
+    .popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.6);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.4s ease;
+      z-index: 999;
+    }
+    .popup.active { opacity: 1; visibility: visible; }
+    .popup-box {
+      background: #fff;
+      color: #333;
+      padding: 2rem;
+      border-radius: 15px;
+      text-align: center;
+      animation: zoomIn 0.5s ease;
+      max-width: 400px;
+      position: relative;
+      z-index: 2;
+    }
+    @keyframes zoomIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .popup-box h3 { margin-bottom: 1rem; font-size: 1.5rem; color: #2575fc; }
+    .popup-box p { font-size: 1rem; color: #555; }
+    .popup-box button {
+      margin-top: 1.5rem;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #confetti-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    @media (max-width: 768px) {
+      .container { flex-direction: column; max-width: 95%; }
+      .info-panel { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="info-panel">
+      <h2>Keuntungan Absensi QR Code</h2>
+      <ul>
+        <li>✔️ Lebih Cepat</li>
+        <li>✔️ Lebih Mudah Dimengerti</li>
+        <li>✔️ Efisien & Modern</li>
+      </ul>
+    </div>
+
+    <div class="login-form">
+      <h2>Masuk ke Akun</h2>
+      <form onsubmit="return login(event)">
+        <div class="input-group">
+          <input type="text" id="username" placeholder="Nama Lengkap" required />
+        </div>
+        <div class="input-group">
+          <input type="password" id="password" placeholder="Kata sandi" required />
+          <span class="toggle-password" onclick="togglePassword()">👁</span>
+        </div>
+        <a href="#">Lupa kata sandi?</a>
+        <button type="submit">Masuk</button>
+        <p id="hint">!! Masukan Nama Lengkap Anda dan Password Dengan Benar !!</p>
+        <p id="errorMsg">❌ Username atau password salah!</p>
+      </form>
+    </div>
+  </div>
+
+  <div class="popup" id="welcomePopup">
+    <canvas id="confetti-canvas"></canvas>
+    <div class="popup-box">
+      <h3 id="welcomeText"></h3>
+      <p id="welcomeDesc"></p>
+      <button onclick="goAbsensi()">🚀 Lanjut ke Absensi</button>
+    </div>
+  </div>
+
+  <script>
+    const akun = {
+      "Achmad Rafi Hakim": "12345",
+      "Aisyah Amelia": "12345",
+      "Ana Rostiana": "12345",
+      "Anggi Jubaedah": "12345",
+      "Ayu Yunita": "12345",
+      "Bela Safitri": "12345",
+      "Dela Oktavia": "12345",
+      "Dika Ardianto": "12345",
+      "Diyas Restyana Putri": "12345",
+      "Emah Rahmawati": "12345",
+      "Hesti Damayanti": "12345",
+      "Kirana": "12345",
+      "Lailatul Fazriyah": "12345",
+      "Miftah Fauziah": "12345",
+      "Muhammad Arif Subagja": "12345",
+      "Nabila Tuz Zahro": "12345",
+      "Nelisa Agustina": "12345",
+      "Nindita Apriliya": "12345",
+      "Nuning Wulandari": "12345",
+      "Nurjanah": "12345",
+      "Putri Eko Nur Hidayah": "12345",
+      "Raihan Fadly Al Ichsani": "12345",
+      "Renita Agustina": "12345",
+      "Rifana Auliya Fizka": "12345",
+      "Riris Riska Agustin": "12345",
+      "Salsabila Azzahra": "12345",
+      "Sindi Triya Maulani": "12345",
+      "Siti Hasnah": "12345",
+      "Siti Sarofa": "12345",
+      "Surya Prika Yoga": "12345",
+      "Syifa Aliya": "12345",
+      "Tasya April Yani": "12345",
+      "Triana Putri": "12345",
+      "Yurike Prastika": "12345"
+    };
+    let loggedInUser = "";
+
+    function login(e){
+      e.preventDefault();
+      const userInput = document.getElementById("username").value.trim().toLowerCase();
+      const pass = document.getElementById("password").value.trim();
+      const errorMsg = document.getElementById("errorMsg");
+
+      const akunKeys = Object.keys(akun);
+      const cocok = akunKeys.find(nama => nama.toLowerCase() === userInput);
+
+      if (cocok && akun[cocok] === pass) {
+        loggedInUser = cocok;
+        errorMsg.style.display = "none";
+        document.getElementById("welcomeText").textContent = "🎉 Selamat Datang, " + cocok + "!";
+        document.getElementById("welcomeDesc").textContent = 
+          "Anda berhasil login ke sistem Absensi QR Code. " +
+          "Click Lanjutkan Untuk Melihat Qrcode. 🚀";
+        document.getElementById("welcomePopup").classList.add("active");
+        startConfetti();
+      } else {
+        errorMsg.style.display = "block";
+      }
+    }
+
+    function goAbsensi(){
+      stopConfetti();
+      window.location.href = "absensi.html?user=" + encodeURIComponent(loggedInUser);
+    }
+
+    function togglePassword(){
+      const passwordField = document.getElementById("password");
+      passwordField.type = passwordField.type === "password" ? "text" : "password";
+    }
+
+    /* CONFETTI */
+    const confettiCanvas = document.getElementById("confetti-canvas");
+    const ctx = confettiCanvas.getContext("2d");
+    let confettis = [], animationFrame;
+    function resizeCanvas(){ confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
+    window.addEventListener("resize", resizeCanvas); resizeCanvas();
+    function random(min, max){ return Math.random() * (max - min) + min; }
+    class Confetti {
+      constructor(){ this.x=random(0,confettiCanvas.width); this.y=random(-confettiCanvas.height,0); this.size=random(5,10); this.speed=random(2,5); this.color=`hsl(${random(0,360)},100%,50%)`; }
+      update(){ this.y += this.speed; if(this.y > confettiCanvas.height){ this.y=random(-20,0); this.x=random(0,confettiCanvas.width);} }
+      draw(){ ctx.fillStyle=this.color; ctx.fillRect(this.x,this.y,this.size,this.size); }
+    }
+    function startConfetti(){ confettis=Array.from({length:200},()=>new Confetti()); animateConfetti(); }
+    function animateConfetti(){ ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); confettis.forEach(c=>{c.update();c.draw();}); animationFrame=requestAnimationFrame(animateConfetti); }
+    function stopConfetti(){ cancelAnimationFrame(animationFrame); ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height); }
+  </script>
+</body>
+</html>
