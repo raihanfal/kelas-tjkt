@@ -136,7 +136,7 @@
         <button class="filter-btn" onclick="setKelas('TJKT 2', this)">TJKT 2</button>
         <button class="filter-btn" onclick="setKelas('TJKT 3', this)">TJKT 3</button>
         <button class="filter-btn" onclick="setKelas('TJKT 4', this)">TJKT 4</button>
-        <button class="filter-btn" onclick="showRekap()">📊 Rekap</button>
+        <button class="filter-btn" onclick="showRekap()">📊 Laporan Absen</button>
       </div>
 
       <div class="search-wrap">
@@ -170,7 +170,7 @@
 
     <!-- REKAP -->
     <div id="pageRekap" style="display:none; margin-top:20px; text-align:center;">
-      <h2 style="margin-bottom:14px;">📊 Rekap Absensi</h2>
+      <h2 style="margin-bottom:14px;">📊 Laporan Absensi</h2>
       <div class="filter-btns">
         <button class="filter-btn active" onclick="setRekapKelas('TJKT 1', this)">TJKT 1</button>
         <button class="filter-btn" onclick="setRekapKelas('TJKT 2', this)">TJKT 2</button>
@@ -225,12 +225,6 @@
   <div id="loading"><div class="spinner"></div></div>
 
   <script>
-    /* ===========================
-       Data awal (sudah ada) --- tetap kita pakai
-       Kamu bisa update/isi properti 'nisn' dan 'photo' di sini nanti,
-       atau biarkan kosong dan sistem akan coba fallback ke foto Sxx.jpg
-       di folder foto/tjktN/
-       =========================== */
     const siswaPerKelas = {
       "TJKT 1": [
         { nama: "ACHMAD RAFI HAKIM", qr: "qr1/achmadrafi.png", nisn: "0089887252", photo: "foto/rafi.jpg"  },
@@ -307,64 +301,74 @@
         { nama:"YUSUF", qr: "qr2/yusuf.png", nisn: "0096401815", photo: "foto/.jpg" }
       ],
       "TJKT 3": [
-       { nama:"ADELIA ANZANI", qr: "qr3/.png", nisn: "0098635926", photo: "foto3/.jpg" },
-        { nama:"AGNES CHINTYA SARI", qr: "qr3/.png", nisn: "0071026101", photo: "foto3/.jpg" },
-        { nama:"AMELIA JULIYANTI", qr: "qr3/.png", nisn: "0095232411", photo: "foto3/.jpg" },
-        { nama:"ANES LISTANTI", qr: "qr3/.png", nisn: "0088761038", photo: "foto3/.jpg" },
-        { nama:"ANISA PRATAMI", qr: "qr3/.png", nisn: "3097062943", photo: "foto3/.jpg" },
-        { nama:"AZRA KHUMAIROH YASIN", qr: "qr3/.png", nisn: "0096662335", photo: "foto3/.jpg" },
-        { nama:"DHELLY MARERRA", qr: "qr3/.png", nisn: "0095311883", photo: "foto3/.jpg" },
-        { nama:"DIVA RAHMAWANI", qr: "qr3/.png", nisn: "0096378710", photo: "foto3/.jpg" },
-        { nama:"ELIS TRI AMELIA", qr: "qr3/.png", nisn: "0096363161", photo: "foto3/.jpg" },
-        { nama:"GINA FEBRIANA EFENDI", qr: "qr3/.png", nisn: "0099921818", photo: "foto3/.jpg" },
-        { nama:"INAS NOVIYANI", qr: "qr3/.png", nisn: "0082354538", photo: "foto3/.jpg" },
-        { nama:"MARWA KEYSA FAUZIAH", qr: "qr3/.png", nisn: "0098269262", photo: "foto3/.jpg" },
-        { nama:"MELATI NUR ISYANA", qr: "qr3/.png", nisn: "0084700523", photo: "foto3/.jpg" },
-        { nama:"MOH. ADITIYA", qr: "qr3/.png", nisn: "0097364937", photo: "foto3/.jpg" },
-        { nama:"MUSLIMAH", qr: "qr3/.png", nisn: "3083090878", photo: "foto3/.jpg" },
-        { nama:"NAELA", qr: "qr3/.png", nisn: "0084761891", photo: "foto3/.jpg" },
-        { nama:"NAZWA AZZAHRAH", qr: "qr3/.png", nisn: "0092761071", photo: "foto3/.jpg" },
-        { nama:"NIKITA WILI", qr: "qr3/.png", nisn: "0091798033", photo: "foto3/.jpg" },
-          { nama:"NUNIK FIT ANIAH", qr: "qr3/.png", nisn: "0084119817", photo: "foto3/.jpg" },
-        { nama:"NUR HASANAH", qr: "qr3/.png", nisn: "0086567488", photo: "foto3/.jpg" },
-        { nama:"PINGKAN", qr: "qr3/.png", nisn: "0092099883", photo: "foto3/.jpg" },
-        { nama:"TANIA AYU ASTUTI", qr: "qr3/.png", nisn: "0099862465", photo: "foto3/.jpg" },
-        { nama:"TIA BILLA DANU SAPUTRI", qr: "qr3/.png", nisn: "0085677742", photo: "foto3/.jpg" },
-        { nama:"VIONA ROSSA DIANTI", qr: "qr3/.png", nisn: "0083951508", photo: "foto3/.jpg" },
-        { nama:"ZASKIA AULIA MAGRIFAH", qr: "qr3/.png", nisn: "0094359977", photo: "foto3/.jpg" }
+
+        { nama:"ADELIA ANZANI", qr:"qr3/adelia.png", nisn:"0098635926", photo:"foto/.jpg" },
+        { nama:"AGNES CHINTYA SARI", qr:"qr3/agnes.png", nisn:"0071026101", photo:"foto/.jpg" },
+        { nama:"AMELIA JULIYANTI", qr:"qr3/amelia.png", nisn:"0095232411", photo:"foto/.jpg" },
+        { nama:"ANES LISTANTI", qr:"qr3/anes.png", nisn:"0088761038", photo:"foto/.jpg" },
+        { nama:"ANISA PRATAMI", qr:"qr3/anisa.png", nisn:"3097062943", photo:"foto/.jpg" },
+        { nama:"AZRA KHUMAIROH YASIN", qr:"qr3/azka.png", nisn:"0096662335", photo:"foto/.jpg" },
+        { nama:"DHELLY MARERRA", qr:"qr3/dhelly.png", nisn:"0095311883", photo:"foto/.jpg" },
+        { nama:"DIVA RAHMAWANI", qr:"qr3/diva.png", nisn:"0096378710", photo:"foto/.jpg" },
+        { nama:"ELIS TRI AMELIA", qr:"qr3/elis.png", nisn:"0096363161", photo:"foto/.jpg" },
+        { nama:"GINA FEBRIANA EFENDI", qr:"qr3/gina.png", nisn:"0099921818", photo:"foto/.jpg" },
+        { nama:"INAS NOVIYANI", qr:"qr3/inas.png", nisn:"0082354538", photo:"foto/.jpg" },
+        { nama:"MARWA KEYSA FAUZIAH", qr:"qr3/marwa.png", nisn:"0098269262", photo:"foto/.jpg" },
+        { nama:"MELATI NUR ISYANA", qr:"qr3/melati.png", nisn:"0084700523", photo:"foto/.jpg" },
+        { nama:"MOH. ADITIYA", qr:"qr3/madit.png", nisn:"0097364937", photo:"foto/.jpg" },
+        { nama:"MUSLIMAH", qr:"qr3/muslimah.png", nisn:"3083090878", photo:"foto/.jpg" },
+        { nama:"NAELA", qr:"qr3/naela.png", nisn:"0084761891", photo:"foto/.jpg" },
+        { nama:"NAZWA AZZAHRAH", qr:"qr3/nazwa.png", nisn:"0092761071", photo:"foto/.jpg" },
+        { nama:"NIKITA WILI", qr:"qr3/nikita.png", nisn:"0091798033", photo:"foto/.jpg" },
+        { nama:"NUNIK FIT ANIAH", qr:"qr3/nunik.png", nisn:"0084119817", photo:"foto/.jpg" },
+        { nama:"NUR HASANAH", qr:"qr3/nur.png", nisn:"0086567488", photo:"foto/.jpg" },
+        { nama:"PINGKAN", qr:"qr3/pingkan.png", nisn:"0092099883", photo:"foto/.jpg" },
+        { nama:"PUTRI PRATIWI", qr:"qr3/putri.png", nisn:"0102956535", photo:"foto/.jpg" },
+        { nama:"RANGGA JAYA", qr:"qr3/rangga.png", nisn:"3098200854", photo:"foto/.jpg" },
+        { nama:"REVALINA DWI ANANDITA", qr:"qr3/revalina.png", nisn:"0096542253", photo:"foto/.jpg" },
+        { nama:"RINI WIGAYANTI", qr:"qr3/rini.png", nisn:"0085431593", photo:"foto/.jpg" },
+        { nama:"ROSIANA DEWI", qr:"qr3/rosiana.png", nisn:"0085883227", photo:"foto/.jpg" },
+        { nama:"SELFINAH PEBRIYANTI", qr:"qr3/selfinah.png", nisn:"0094776798", photo:"foto/.jpg" },
+        { nama:"SITI HABIBAH", qr:"qr3/sitihabibah.png", nisn:"0086641249", photo:"foto/.jpg" },
+        { nama:"SITI NURFAUJIAH", qr:"qr3/sitinurfaujiah.png", nisn:"0089963243", photo:"foto/.jpg" },
+        { nama:"SUKMA RAHAYU", qr:"qr3/sukma.png", nisn:"0098505447", photo:"foto/.jpg" },
+        { nama:"TANIA AYU ASTUTI", qr:"qr3/tania.png", nisn:"0099862465", photo:"foto/.jpg" },
+        { nama:"TIA BILLA DANU SAPUTRI", qr:"qr3/tia.png", nisn:"0085677742", photo:"foto/.jpg" },
+        { nama:"VIONA ROSSA DIANTI", qr:"qr3/viona.png", nisn:"0083951508", photo:"foto/.jpg" },
+        { nama:"ZASKIA AULIA MAGRIFAH", qr:"qr3/zaskia.png", nisn:"0094359977", photo:"foto/.jpg" }
       ], 
       "TJKT 4": [
-        { nama:"ADEN BACTIAR", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"ADIT SAPUTRA", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"AGNES AYU ASSIFA", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"AHMAD AL-IQSAN", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"AHMAD REVALDO", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"AISYAH MAULIDIA", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"ANAYAH", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"ANDIKA JUEDY", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"ARDI INDRA PRATAMA", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"DAENAH PUTRI", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"DAHLIA RAHMA JAYANTI", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"DARUNI", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"DAVIN ARSHAVIN", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"DIANA BELLA", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"FIRZAS ADNAN FAUZAN", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"JESSEN NOVELINO", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"KARUNIA", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"LIDIYAH", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"MASHITA SARAH", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"MELANI RAHMAWATI", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"MELINDA FEBRIYANTI", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"MUSLIMAH", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"MUSTAKIM", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"NABIL FATURROHMAN", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"NAWANG PRIASIH", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"OKTAVIANI ELSYAFITRI", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"PANJI ANOM PAMUNGKAS", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"RIDHO AZRIEL PANGESTU", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"RISMA", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"TARMILA", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" },
-        { nama:"TYAS APRIYANI", qr: "qr4/.png", nisn: "1", photo: "foto4/.jpg" }
+        { nama:"ADEN BACTIAR", qr: "qr4/aden.png", nisn: "0087022820", photo: "foto/.jpg" },
+        { nama:"ADIT SAPUTRA", qr: "qr4/adit.png", nisn: "0083206020", photo: "foto/.jpg" },
+        { nama:"AGNES AYU ASSIFA", qr: "qr4/agnes.png", nisn: "0092006034", photo: "foto/.jpg" },
+        { nama:"AHMAD AL-IQSAN", qr: "qr4/ahmadaliqsan.png", nisn: "3087682628", photo: "foto/.jpg" },
+        { nama:"AHMAD REVALDO", qr: "qr4/ahmadrevaldo.png", nisn: "0099350802", photo: "foto/.jpg" },
+        { nama:"AISYAH MAULIDIA", qr: "qr4/aisyah.png", nisn: "0092737881", photo: "foto/.jpg" },
+        { nama:"ANAYAH", qr: "qr4/anayah.png", nisn: "0078889222", photo: "foto/.jpg" },
+        { nama:"ANDIKA JUEDY", qr: "qr4/andika.png", nisn: "0085063708", photo: "foto/.jpg" },
+        { nama:"ARDI INDRA PRATAMA", qr: "qr4/ardi.png", nisn: "0089265385", photo: "foto/.jpg" },
+        { nama:"DAENAH PUTRI", qr: "qr4/daenah.png", nisn: "0089404936", photo: "foto/.jpg" },
+        { nama:"DAHLIA RAHMA JAYANTI", qr: "qr4/dahlia.png", nisn: "0096595937", photo: "foto/.jpg" },
+        { nama:"DARUNI", qr: "qr4/daruni.png", nisn: "0088644974", photo: "foto/.jpg" },
+        { nama:"DAVIN ARSHAVIN", qr: "qr4/davin.png", nisn: "0086403639", photo: "foto/.jpg" },
+        { nama:"DIANA BELLA", qr: "qr4/diana.png", nisn: "0091851727", photo: "foto/.jpg" },
+        { nama:"FIRZAS ADNAN FAUZAN", qr: "qr4/firzas.png", nisn: "0084199891", photo: "foto/.jpg" },
+        { nama:"JESSEN NOVELINO", qr: "qr4/jessen.png", nisn: "0083925846", photo: "foto/.jpg" },
+        { nama:"KARUNIA", qr: "qr4/karuni.png", nisn: "0095853299", photo: "foto/.jpg" },
+        { nama:"LIDIYAH", qr: "qr4/lidiyah.png", nisn: "0058789820", photo: "foto/.jpg" },
+        { nama:"MASHITA SARAH", qr: "qr4/mashita.png", nisn: "0096522653", photo: "foto/.jpg" },
+        { nama:"MELANI RAHMAWATI", qr: "qr4/melani.png", nisn: "0094508193", photo: "foto/.jpg" },
+        { nama:"MELINDA FEBRIYANTI", qr: "qr4/melinda.png", nisn: "0096963650", photo: "foto/.jpg" },
+        { nama:"MUSLIMAH", qr: "qr4/muslimah.png", nisn: "0099125486", photo: "foto/.jpg" },
+        { nama:"MUSTAKIM", qr: "qr4/mustakim.png", nisn: "0094246081", photo: "foto/.jpg" },
+        { nama:"NABIL FATURROHMAN", qr: "qr4/nabil.png", nisn: "0094390381", photo: "foto/.jpg" },
+        { nama:"NAWANG PRIASIH", qr: "qr4/nawang.png", nisn: "0096114411", photo: "foto/.jpg" },
+        { nama:"OKTAVIANI ELSYAFITRI", qr: "qr4/oktaviani.png", nisn: "0093246979", photo: "foto/.jpg" },
+        { nama:"PANJI ANOM PAMUNGKAS", qr: "qr4/panji.png", nisn: "0082191854", photo: "foto/.jpg" },
+        { nama:"RIDHO AZRIEL PANGESTU", qr: "qr4/ridho.png", nisn: "0095972681", photo: "foto/.jpg" },
+        { nama:"RISMA", qr: "qr4/risma.png", nisn: "0091636952", photo: "foto/.jpg" },
+        { nama:"TARMILA", qr: "qr4/tarmila.png", nisn: "0095330248", photo: "foto/.jpg" },
+        { nama:"TYAS APRIYANI", qr: "qr4/tyas.png", nisn: "0089712758", photo: "foto/.jpg" }
       ]
     };
 
