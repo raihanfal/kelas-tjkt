@@ -654,6 +654,192 @@
     document.getElementById("yearInput").addEventListener("change", loadRekapData);
     document.getElementById("sortOrder").addEventListener("change", loadRekapData);
 
+
+(function(){
+  // Konfigurasi
+  const POLL_INTERVAL_MS = 3000; // polling tiap 3000 ms (3 detik)
+  const SPREADSHEET_BASE = `https://opensheet.elk.sh/${SPREADSHEET_ID}/`;
+
+  // state untuk menyimpan waktu terakhir yg sudah terlihat per kelas
+  const lastSeen = {}; // contoh: { "TJKT 1": DateObj }
+
+  // buat overlay notifikasi (tambahan CSS minimal)
+  const style = document.createElement('style');
+  style.textContent = `
+    .absen-toast {
+      position: fixed; right: 20px; top: 20px; z-index: 10000;
+      min-width: 280px; max-width: 420px; border-radius: 10px;
+      padding: 14px 16px; box-shadow: 0 8px 28px rgba(2,6,23,0.6);
+      background: linear-gradient(90deg,#10b981,#34d399); color: #06211a;
+      font-weight:700; display:flex; gap:10px; align-items:center;
+      transform: translateY(-8px); opacity:0; transition: all .35s ease;
+    }
+    .absen-toast.show { transform: translateY(0); opacity:1; }
+    .absen-toast .meta { font-weight:600; font-size:13px; color:#022; }
+    .absen-toast .sub { font-weight:600; font-size:12px; color:#042; opacity:0.85; }
+    .rekap-new-highlight { animation: flashHighlight 2.2s ease forwards; }
+    @keyframes flashHighlight {
+      0% { background: linear-gradient(90deg, rgba(59,130,246,0.12), rgba(16,185,129,0.12)); }
+      60% { background: linear-gradient(90deg, rgba(59,130,246,0.06), rgba(16,185,129,0.06)); }
+      100% { background: transparent; }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // function untuk membuat / munculkan toast
+  function showSuccessToast({nama, id, kelas, status, waktuRaw, waktu}) {
+    // hapus toast lama bila ada
+    const old = document.querySelector('.absen-toast');
+    if (old) old.remove();
+
+    const div = document.createElement('div');
+    div.className = 'absen-toast';
+    div.innerHTML = `
+      <div style="width:48px; height:48px; border-radius:8px; background:rgba(255,255,255,0.9); display:flex; align-items:center; justify-content:center; font-size:20px;">✓</div>
+      <div style="flex:1">
+        <div style="font-size:15px; margin-bottom:2px;">Absensi Berhasil</div>
+        <div class="meta">${escapeHtml(nama)} • ${escapeHtml(id)}</div>
+        <div class="sub">${escapeHtml(kelas)} — ${escapeHtml(waktu ? waktu.toLocaleString('id-ID') : String(waktuRaw||'-'))}</div>
+      </div>
+      <div style="margin-left:8px; font-size:12px; opacity:0.9; cursor:pointer;" title="Tutup">✕</div>
+    `;
+    document.body.appendChild(div);
+    // show anim
+    setTimeout(()=>div.classList.add('show'), 10);
+
+    // klik x untuk tutup
+    div.querySelectorAll('[title="Tutup"]').forEach(btn => btn.addEventListener('click', ()=> div.remove()));
+
+    // auto hide setelah 6 detik
+    setTimeout(()=>{ div && div.remove(); }, 6000);
+  }
+
+  // util: escapeHtml (re-use yang ada)
+  function escapeHtml(s){ return String(s||"").replace(/[&<>]/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;" }[c])); }
+
+  // Ambil data opensheet, kembalikan array record (menggunakan rowToRecord yang sudah ada)
+  async function fetchRecordsFor(kelas) {
+    try {
+      const url = SPREADSHEET_BASE + encodeURIComponent(kelas);
+      const res = await fetch(url, {cache: "no-store"});
+      if (!res.ok) throw new Error(res.status+' '+res.statusText);
+      const data = await res.json();
+      const records = (data||[]).map(rowToRecord);
+      return records;
+    } catch(err) {
+      console.warn('Realtime poll gagal ambil sheet:', err);
+      return null;
+    }
+  }
+
+  // cek entri terbaru dan bandingkan dengan lastSeen[kelas]
+  async function checkForNew(kelas) {
+    const records = await fetchRecordsFor(kelas);
+    if (!records) return;
+    // cari record dengan waktu paling baru (yang memiliki waktu parsed)
+    const withTime = records.filter(r => r.waktu instanceof Date && !isNaN(r.waktu));
+    if (withTime.length === 0) return;
+    withTime.sort((a,b)=>b.waktu - a.waktu);
+    const newest = withTime[0];
+
+    const last = lastSeen[kelas] || null;
+    // jika belum pernah lihat, set lastSeen ke newest tetapi jangan tampilkan notifikasi historis
+    if (!last) {
+      lastSeen[kelas] = newest.waktu;
+      return;
+    }
+    // jika waktu newest > lastSeen => entri baru
+    if (newest.waktu > last) {
+      // update lastSeen ke newest
+      lastSeen[kelas] = newest.waktu;
+      // tampilkan toast
+      showSuccessToast({
+        nama: newest.nama || (newest.raw && newest.raw.nama) || "-",
+        id: newest.id || (newest.raw && newest.raw.id) || "-",
+        kelas: kelas,
+        status: newest.status || "-",
+        waktuRaw: newest.waktuRaw,
+        waktu: newest.waktu
+      });
+      // jika user sedang lihat halaman rekap, sorot baris baru
+      highlightNewRowInTable(newest);
+    }
+  }
+
+  // sorot (flash) baris rekap yang sesuai entri baru (jika table ada)
+  function highlightNewRowInTable(record) {
+    try {
+      const tbody = document.querySelector("#rekapTable tbody");
+      if (!tbody) return;
+      // cari tr yang mengandung nama & id & waktu (waktu bisa dalam format berbeda, jadi cari nama+id)
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      const nameLower = (record.nama||'').toLowerCase().trim();
+      const idLower = (record.id||'').toLowerCase().trim();
+
+      for (const tr of rows) {
+        const txt = tr.textContent.toLowerCase();
+        if (txt.includes(nameLower) && (idLower==='' || txt.includes(idLower))) {
+          tr.classList.add('rekap-new-highlight');
+          // remove class setelah anim selesai (2.2s)
+          setTimeout(()=>tr.classList.remove('rekap-new-highlight'), 2300);
+          return;
+        }
+      }
+      // jika tidak ketemu (mis. tabel belum dimuat), tambahkan baris baru di atas tabel untuk menunjukkan
+      if (rows.length===0 || !rows.some(()=>true)) {
+        // nothing
+        return;
+      }
+    } catch(e){ console.warn(e); }
+  }
+
+  // mulai polling untuk semua kelas yang terlihat di tombol (atau hanya kelas rekap saat ini)
+  function startPolling() {
+    // inisialisasi lastSeen untuk setiap kelas supaya tidak menampilkan notifikasi lama
+    const kelasButtons = Object.keys(siswaPerKelas || {});
+    kelasButtons.forEach(k => lastSeen[k] = null);
+
+    // Namun biarkan polling fokus ke kelas rekap yang dipilih (currentRekapKelas)
+    setInterval(async ()=>{
+      // jika pageRekap sedang tampilkan, langsung cek kelas rekap
+      if (document.getElementById("pageRekap").style.display !== "none") {
+        await checkForNew(currentRekapKelas);
+      } else {
+        // jika pageSiswa tampil, bisa cek semua kelas (opsional) — saya cek semua agar admin bisa lihat notif di halaman utama
+        for (const k of kelasButtons) await checkForNew(k);
+      }
+    }, POLL_INTERVAL_MS);
+  }
+
+  // jalankan setelah load (pastikan fungsi rowToRecord & parseDate sudah didefinisikan)
+  window.addEventListener('load', () => {
+    // jika rekap belum pernah dimuat, set lastSeen untuk mencegah notifikasi historis:
+    (async ()=>{
+      // ambil singkat: inisialisasi lastSeen per kelas ke waktu paling akhir di sheet (kalau ada)
+      try {
+        const kelasButtons = Object.keys(siswaPerKelas || {});
+        for (const k of kelasButtons) {
+          const recs = await fetchRecordsFor(k);
+          if (recs && recs.length) {
+            const withTime = recs.filter(r=>r.waktu instanceof Date && !isNaN(r.waktu));
+            if (withTime.length) {
+              withTime.sort((a,b)=>b.waktu - a.waktu);
+              lastSeen[k] = withTime[0].waktu;
+            } else {
+              lastSeen[k] = null;
+            }
+          } else {
+            lastSeen[k] = null;
+          }
+        }
+      } catch(e) { console.warn(e); }
+      // mulai polling
+      startPolling();
+    })();
+  });
+
+})();
+ /* ---- Selesai: realtime-poller ---- */
   </script>
 </body>
 </html>
